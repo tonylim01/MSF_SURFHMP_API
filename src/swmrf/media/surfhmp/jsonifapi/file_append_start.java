@@ -39,15 +39,17 @@ public class file_append_start {
 	
     public String file_append_start_msg()
     {
+    		HashMap<String,Object> tool_req_hash = new HashMap<String,Object>();
+    		HashMap<String,Object> senddata_hash = new HashMap<String,Object>();
+		
+		tool_req_hash.put("tool_id", tool_id);
+		tool_req_hash.put("req_id", req_id);
+		tool_req_hash.put("req_type", req_type);
+		tool_req_hash.put("data", this.Data());
+		JSONObject tool_req = new JSONObject(tool_req_hash);
+		
+		senddata_hash.put("tool_req", tool_req);
 		JSONObject senddata = new JSONObject();
-		JSONObject tool_req = new JSONObject();
-		
-		tool_req.put("tool_id", tool_id);
-		tool_req.put("req_id", req_id);
-		tool_req.put("req_type", req_type);
-		tool_req.put("data", this.Data());
-		
-		senddata.put("tool_req", tool_req);
 		
     		return senddata.toString();
     		
