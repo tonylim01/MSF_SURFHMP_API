@@ -15,7 +15,6 @@ public class SurfHMPMain {
 		try {
 			tcp_client.client("192.168.5.63", 7777);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
