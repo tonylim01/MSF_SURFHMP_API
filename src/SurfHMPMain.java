@@ -1,4 +1,6 @@
 import swmrf.media.surfhmp.jsonifapi.SurfConnect;
+import swmrf.media.surfhmp.jsonifapi.configure_voice_tool;
+import swmrf.media.surfhmp.jsonifapi.voice_rtp_control;
 import swmrf.media.tcpsocket.TCPSocketAPI;
 
 public class SurfHMPMain {
@@ -61,8 +63,16 @@ public class SurfHMPMain {
 		else if(args[0].equals("voice_mixer"))
 		{
 			System.out.println("################## voice_mixer ################");
+			SurfFunction func = new SurfFunction();
 			
+			func.func_system_status_mix(tcp_client);
+			func.func_voice_mixer(tcp_client);
+			func.func_voice_rtp_control(tcp_client);
+			func.func_voice_mix_participants(tcp_client);
 		}
 	}
+
+	
+
 
 }

@@ -49,7 +49,7 @@ public class file_append_start {
 		JSONObject tool_req = new JSONObject(tool_req_hash);
 		
 		senddata_hash.put("tool_req", tool_req);
-		JSONObject senddata = new JSONObject();
+		JSONObject senddata = new JSONObject(senddata_hash);
 		
     		return senddata.toString();
     		

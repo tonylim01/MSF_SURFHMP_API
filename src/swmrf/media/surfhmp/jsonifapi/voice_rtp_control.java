@@ -2,56 +2,22 @@ package swmrf.media.surfhmp.jsonifapi;
 
 import java.util.HashMap;
 
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-public class configure_voice_tool {
-
-	public String status_type;
-	public String events_type;
+public class voice_rtp_control {
 	public String decoder_type;
 	public String encoder_type;
 	public String remote_ip;
 	public String tool_type;
 	public String req_type;
-	public int period;
-	public int packet_duration;
+//	public int packet_duration;
 	public int local_udp_port;
 	public int remote_udp_port;
 	public int out_payload_type;
-	public int group_id;
+	public int in_payload_type;
 	public int tool_id;
 	public int req_id;
-	public boolean input_from_RTP;
-	
-	public JSONArray status()
-    {
-		HashMap<String,Object> status_temp_hash = new HashMap<String,Object>();
-		
-		JSONArray statusarr = new JSONArray();
-		status_temp_hash.put("type", status_type);
-		status_temp_hash.put("period", new Integer(period));
-		JSONObject status_temp = new JSONObject(status_temp_hash);
-		
-		statusarr.add(status_temp);
-		
-		return statusarr;
-    }
-	
-	public JSONArray events()
-    {
-		HashMap<String,Object> status_temp_hash = new HashMap<String,Object>();
-		
-		JSONArray eventsarr = new JSONArray();
-		
-		status_temp_hash.put("type", events_type);
-		status_temp_hash.put("enabled", true);
-		
-		JSONObject status_temp = new JSONObject(status_temp_hash);
-		eventsarr.add(status_temp);
-		
-		return eventsarr;
-    }
+	public int backend_tool_id;
 	
 	public JSONObject decoder()
     {
@@ -68,7 +34,7 @@ public class configure_voice_tool {
 		HashMap<String,Object> encoder_temp_hash = new HashMap<String,Object>();
 		
 		encoder_temp_hash.put("type", encoder_type);
-		encoder_temp_hash.put("packet_duration", new Integer(packet_duration));
+//		encoder_temp_hash.put("packet_duration", new Integer(packet_duration));
 		JSONObject encoder_temp = new JSONObject(encoder_temp_hash);
 		
 		return encoder_temp;
@@ -81,6 +47,7 @@ public class configure_voice_tool {
 		RTP_temp_hash.put("local_udp_port", local_udp_port);
 		RTP_temp_hash.put("remote_udp_port", remote_udp_port);
 		RTP_temp_hash.put("remote_ip", remote_ip);
+		RTP_temp_hash.put("in_payload_type", new Integer(in_payload_type));
 		RTP_temp_hash.put("out_payload_type", new Integer(out_payload_type));
 		
 		JSONObject RTP_temp = new JSONObject(RTP_temp_hash);
@@ -92,22 +59,18 @@ public class configure_voice_tool {
     {
 		HashMap<String,Object> data_hash = new HashMap<String,Object>();
 		
-		data_hash.put("status", this.status());
-		data_hash.put("events", this.events());
 		data_hash.put("decoder", this.decoder());
 		data_hash.put("encoder", this.encoder());
 		data_hash.put("RTP", this.RTP());
 		data_hash.put("tool_type", tool_type);
-		data_hash.put("input_from_RTP", input_from_RTP);
-		data_hash.put("app_info", "test");
-		data_hash.put("group_id", new Integer(group_id));
+		data_hash.put("backend_tool_id", backend_tool_id);
 		JSONObject data = new JSONObject(data_hash);
 		
     		return data;
     		
     }
 	
-    public String configure_voice_tool_msg()
+    public String voice_rtp_control_msg()
     {
     		HashMap<String,Object> senddata_hash = new HashMap<String,Object>();
     		HashMap<String,Object> tool_req_hash = new HashMap<String,Object>();
