@@ -1,0 +1,16 @@
+{"configuration":{
+   "worker_threads":8,
+   "tcp_configuration_port":7777,
+   "concurrent_config_connections":2,
+   "block_size":20,
+   "logger":true,
+   "file_play":true,
+   "file_record":true,
+   "netevent":true,
+   "intel_graphics":true,
+   "error_log":"error_log.txt",
+	"license_server_address":"127.0.0.1",
+	"license_server_port":1288,
+	"license":"8DQcZtR+nRjV3WFOkASje3VYinI2gydvyaFAp8VcaHmxjTwCOxWr83WmX1FsxJC7/fyW9f6Xt4/HMfvj0lSH+BmfIPQhc2YxLVIY4ddFk2YGanxIJdQt0awCNa0Gr2y6rA6DIyTN1N2qA77AYMa71dBMxZ9lDry/T98bzNHkCPIGTHqMjL8ycRxPE/Aea7ExHbnFGu0N5AMFA5P3+e3qvpPTUqCrg1a5BygEOEIgrzxIVXsFf51W3qedcnsj38zfQy7TPyesI9trZ+cmpGrJ1weKgv8S9K0W4h9rLKXQuoOKjw4PE14A3wv1nzMjrkWnJdKHNOm3mg=="
+}}
+
