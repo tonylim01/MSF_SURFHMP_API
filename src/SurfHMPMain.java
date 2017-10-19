@@ -6,7 +6,6 @@ import swmrf.media.tcpsocket.TCPSocketAPI;
 public class SurfHMPMain {
 
 	public static void main(String[] args) throws InterruptedException {
-		// TODO Auto-generated method stub
 		
 		System.out.println("Start SurfHMP Process");
 		
