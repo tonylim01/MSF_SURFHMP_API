@@ -4,63 +4,52 @@ import java.util.HashMap;
 
 import org.json.simple.JSONObject;
 
-public class voice_mixer {
-	private String tool_type;
+public class voice_file_recording {
+	private String cmd_type;
 	private String req_type;
-	private int req_id;
+	private String file_name;
 	private int tool_id;
-	private int sampling_rate;
-	private int hangover_period;
-	private int dominant_speakers;
+	private int req_id;
+	private int max_size;
 	
-	public void ToolType(String tool_type)
+	public void CmdType(String cmd_type)
 	{
-		this.tool_type = tool_type;
+		this.cmd_type = cmd_type;
 	}
 	
 	public void ReqType(String req_type)
 	{
 		this.req_type = req_type;
 	}
-	
-	public void ReqId(int req_id)
+	public void FileName(String file_name)
 	{
-		this.req_id = req_id;
+		this.file_name = file_name;
 	}
-	
 	public void ToolId(int tool_id)
 	{
 		this.tool_id = tool_id;
 	}
-	
-	public void SamplingRate(int sampling_rate)
+	public void ReqId(int req_id)
 	{
-		this.sampling_rate = sampling_rate;
+		this.req_id = req_id;
 	}
-	
-	public void HangoverPeriod(int hangover_period)
+	public void MaxSize(int max_size)
 	{
-		this.hangover_period = hangover_period;
-	}
-	
-	public void DominantSpeakers(int dominant_speakers)
-	{
-		this.dominant_speakers = dominant_speakers;
+		this.max_size = max_size;
 	}
 	
 	private JSONObject Data()
     {
 		HashMap<String,Object> data_hash = new HashMap<String,Object>();
-		data_hash.put(SurfConstants.TOOL_TYPE, this.tool_type);
-		data_hash.put(SurfConstants.SAMPLING_RATE, this.sampling_rate);
-		data_hash.put(SurfConstants.HANGOVER_PERIOD, this.hangover_period);
-		data_hash.put(SurfConstants.DOMINANT_SPEAKERS, this.dominant_speakers);
+		data_hash.put(SurfConstants.CMD_TYPE, this.cmd_type);
+		data_hash.put(SurfConstants.FILE_NAME, this.file_name);
+		data_hash.put(SurfConstants.MAX_SIZE, this.max_size);
 		JSONObject data = new JSONObject(data_hash);
 		
     		return data;
     }
 	
-    public String voice_mixer_msg()
+    public String file_record_msg()
     {
 		HashMap<String,Object> senddata_hash = new HashMap<String,Object>();
 		HashMap<String,Object> tool_req_hash = new HashMap<String,Object>();

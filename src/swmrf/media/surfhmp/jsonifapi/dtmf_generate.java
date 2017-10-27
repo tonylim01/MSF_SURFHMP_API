@@ -2,30 +2,35 @@ package swmrf.media.surfhmp.jsonifapi;
 
 import java.util.HashMap;
 
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-public class voice_mix_participants {
+public class dtmf_generate {
+	private String cmd_type;
 	private String req_type;
-	private String data_type;
-	private int req_id;
+	private String rtp_or_inband;
+	private String named_event;
 	private int tool_id;
-	private int data_tool_id;
-	private int id;
+	private int req_id;
+	private int total_duration;
+	
+	public void CmdType(String cmd_type)
+	{
+		this.cmd_type = cmd_type;
+	}
 	
 	public void ReqType(String req_type)
 	{
 		this.req_type = req_type;
 	}
 	
-	public void DataType(String data_type)
+	public void RtpOrInband(String rtp_or_inband)
 	{
-		this.data_type = data_type;
+		this.rtp_or_inband = rtp_or_inband;
 	}
 	
-	public void ReqId(int req_id)
+	public void NamedEvent(String named_event)
 	{
-		this.req_id = req_id;
+		this.named_event = named_event;
 	}
 	
 	public void ToolId(int tool_id)
@@ -33,34 +38,39 @@ public class voice_mix_participants {
 		this.tool_id = tool_id;
 	}
 	
-	public void DataToolId(int data_tool_id)
+	public void ReqId(int req_id)
 	{
-		this.data_tool_id = data_tool_id;
+		this.req_id = req_id;
 	}
 	
-	public void ID(int id)
+	public void TotalDuration(int total_duration)
 	{
-		this.id = id;
+		this.total_duration = total_duration;
 	}
 	
-	@SuppressWarnings("unchecked")
+	private JSONObject ip_event()
+    {
+		HashMap<String,Object> ip_event_temp_hash = new HashMap<String,Object>();
+		
+		ip_event_temp_hash.put(SurfConstants.NAMED_EVENT, this.named_event);
+		JSONObject ip_event_temp = new JSONObject(ip_event_temp_hash);
+		
+		return ip_event_temp;
+    }
+	
 	private JSONObject Data()
     {
 		HashMap<String,Object> data_hash = new HashMap<String,Object>();
-		HashMap<String,Object> participants_hash = new HashMap<String,Object>();
-		JSONArray participantsarr = new JSONArray();
-		participants_hash.put(SurfConstants.TYPE, this.data_type);
-		participants_hash.put(SurfConstants.ID, new Integer(this.id));
-		participants_hash.put(SurfConstants.DATA_TOOL_ID, new Integer(this.data_tool_id));
-		JSONObject participants = new JSONObject(participants_hash);
-		participantsarr.add(participants);
-		data_hash.put(SurfConstants.PARTICIPANT, participantsarr);
+		data_hash.put(SurfConstants.CMD_TYPE, this.cmd_type);
+		data_hash.put(SurfConstants.IP_EVENT, this.ip_event());
+		data_hash.put(SurfConstants.RTP_OR_INBAND, this.rtp_or_inband);
+		data_hash.put(SurfConstants.TOTAl_DURATION, this.total_duration);
 		JSONObject data = new JSONObject(data_hash);
 		
     		return data;
     }
 	
-    public String voice_mix_participants_msg()
+    public String dtmf_generate_msg()
     {
 		HashMap<String,Object> senddata_hash = new HashMap<String,Object>();
 		HashMap<String,Object> tool_req_hash = new HashMap<String,Object>();

@@ -5,36 +5,22 @@ import java.util.HashMap;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-public class configure_voice_tool {
-
-	private String status_type;
-	private String events_type;
+public class configure_dtmf_tool {
 	private String decoder_type;
 	private String encoder_type;
 	private String remote_ip;
 	private String tool_type;
 	private String req_type;
-	private String app_info;
-	private int period;
+	private String dtmp_group;
 	private int packet_duration;
 	private int local_udp_port;
 	private int remote_udp_port;
-	private int out_payload_type;
-	private int group_id;
 	private int tool_id;
 	private int req_id;
-	private boolean input_from_RTP;
-	private boolean enabled;
-	
-	public void StatusType(String status_type)
-	{
-		this.status_type = status_type;
-	}
-	
-	public void EventsType(String events_type)
-	{
-		this.events_type = events_type;
-	}
+	private int dtmf_in_payload_type;
+	private int dtmf_out_payload_type;
+	private boolean evg;
+	private boolean evd;
 	
 	public void DecoderType(String decoder_type)
 	{
@@ -61,15 +47,11 @@ public class configure_voice_tool {
 		this.req_type = req_type;
 	}
 	
-	public void AppInfo(String app_info)
+	public void DtmfGroup(String dtmp_group)
 	{
-		this.app_info = app_info;
+		this.dtmp_group = dtmp_group;
 	}
 	
-	public void Period(int period)
-	{
-		this.period = period;
-	}
 	
 	public void PacketDuration(int packet_duration)
 	{
@@ -86,16 +68,6 @@ public class configure_voice_tool {
 		this.remote_udp_port = remote_udp_port;
 	}
 	
-	public void OutPayloadType(int out_payload_type)
-	{
-		this.out_payload_type = out_payload_type;
-	}
-	
-	public void GroupId(int group_id)
-	{
-		this.group_id = group_id;
-	}
-	
 	public void ToolId(int tool_id)
 	{
 		this.tool_id = tool_id;
@@ -105,51 +77,56 @@ public class configure_voice_tool {
 	{
 		this.req_id = req_id;
 	}
-	public void InputFromRTP(boolean input_from_RTP)
+	
+	public void DtmfInPayloadType(int dtmf_in_payload_type)
 	{
-		this.input_from_RTP = input_from_RTP;
-	}
-	public void Enabled(boolean enabled)
-	{
-		this.enabled = enabled;
+		this.dtmf_in_payload_type = dtmf_in_payload_type;
 	}
 	
-	@SuppressWarnings("unchecked")
-	private JSONArray status()
-    {
-		HashMap<String,Object> status_temp_hash = new HashMap<String,Object>();
-		
-		JSONArray statusarr = new JSONArray();
-		status_temp_hash.put(SurfConstants.TYPE, this.status_type);
-		status_temp_hash.put(SurfConstants.PERIOD, new Integer(this.period));
-		JSONObject status_temp = new JSONObject(status_temp_hash);
-		
-		statusarr.add(status_temp);
-		
-		return statusarr;
-    }
+	public void DtmfOutPayloadType(int dtmf_out_payload_type)
+	{
+		this.dtmf_out_payload_type = dtmf_out_payload_type;
+	}
 	
-	@SuppressWarnings("unchecked")
-	private JSONArray events()
-    {
-		HashMap<String,Object> status_temp_hash = new HashMap<String,Object>();
-		
-		JSONArray eventsarr = new JSONArray();
-		
-		status_temp_hash.put(SurfConstants.TYPE, this.events_type);
-		status_temp_hash.put(SurfConstants.ENABLED, this.enabled);
-		
-		JSONObject status_temp = new JSONObject(status_temp_hash);
-		eventsarr.add(status_temp);
-		
-		return eventsarr;
-    }
+	public void EVG(boolean evg)
+	{
+		this.evg = evg;
+	}
+	
+	public void EVD(boolean evd)
+	{
+		this.evd = evd;
+	}
 	
 	private JSONObject decoder()
     {
 		HashMap<String,Object> decoder_temp_hash = new HashMap<String,Object>();
 		
 		decoder_temp_hash.put(SurfConstants.TYPE, this.decoder_type);
+		JSONObject decoder_temp = new JSONObject(decoder_temp_hash);
+		
+		return decoder_temp;
+    }
+	
+	private JSONObject EVG()
+    {
+		HashMap<String,Object> decoder_temp_hash = new HashMap<String,Object>();
+		
+		decoder_temp_hash.put(SurfConstants.ENABLED, this.evg);
+		JSONObject decoder_temp = new JSONObject(decoder_temp_hash);
+		
+		return decoder_temp;
+    }
+	
+	@SuppressWarnings("unchecked")
+	private JSONObject EVD()
+    {
+		HashMap<String,Object> decoder_temp_hash = new HashMap<String,Object>();
+		JSONArray eventsarr = new JSONArray();
+		eventsarr.add(this.dtmp_group);
+		decoder_temp_hash.put(SurfConstants.ENABLED, this.evd);
+		decoder_temp_hash.put(SurfConstants.EVENTS, eventsarr);
+
 		JSONObject decoder_temp = new JSONObject(decoder_temp_hash);
 		
 		return decoder_temp;
@@ -173,7 +150,8 @@ public class configure_voice_tool {
 		RTP_temp_hash.put(SurfConstants.LOCAL_UDP_PORT, this.local_udp_port);
 		RTP_temp_hash.put(SurfConstants.REMOTE_UDP_PORT, this.remote_udp_port);
 		RTP_temp_hash.put(SurfConstants.REMOTE_IP, this.remote_ip);
-		RTP_temp_hash.put(SurfConstants.OUT_PAYLOAD_TYPE, new Integer(this.out_payload_type));
+		RTP_temp_hash.put(SurfConstants.DTMF_IN_PAYLOAD_TYPE, new Integer(this.dtmf_in_payload_type));
+		RTP_temp_hash.put(SurfConstants.DTMF_OUT_PAYLOAD_TYPE, new Integer(this.dtmf_out_payload_type));
 		
 		JSONObject RTP_temp = new JSONObject(RTP_temp_hash);
 		
@@ -184,22 +162,20 @@ public class configure_voice_tool {
     {
 		HashMap<String,Object> data_hash = new HashMap<String,Object>();
 		
-		data_hash.put(SurfConstants.STATUS, this.status());
-		data_hash.put(SurfConstants.EVENTS, this.events());
 		data_hash.put(SurfConstants.DECODER, this.decoder());
-		data_hash.put(SurfConstants.ENCODER, this.encoder());
+		data_hash.put(SurfConstants.ENABLED, this.encoder());
 		data_hash.put(SurfConstants.RTP, this.RTP());
+		data_hash.put(SurfConstants.EVG, this.EVG());
+		if(evd == true)
+			data_hash.put(SurfConstants.EVD, this.EVD());
 		data_hash.put(SurfConstants.TOOL_TYPE, this.tool_type);
-		data_hash.put(SurfConstants.INPUT_FROM_RTP, this.input_from_RTP);
-		data_hash.put(SurfConstants.APP_INFO,this.app_info);
-		data_hash.put(SurfConstants.GROUP_ID, new Integer(this.group_id));
 		JSONObject data = new JSONObject(data_hash);
 		
     		return data;
     		
     }
 	
-    public String configure_voice_tool_msg()
+    public String configure_dtmf_tool_msg()
     {
     		HashMap<String,Object> senddata_hash = new HashMap<String,Object>();
     		HashMap<String,Object> tool_req_hash = new HashMap<String,Object>();

@@ -5,6 +5,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
 
+import org.json.simple.parser.ParseException;
+
+import swmrf.media.surfhmp.jsonifapi.JsonToolParser;
+
 public class TCPSocketAPI extends Thread{
 	Socket socket;
 	DataOutputStream outToServer;
@@ -54,13 +58,6 @@ public class TCPSocketAPI extends Thread{
 			}
     }
     
-    public int getBigEndian(byte[] v){
-    		int[] arr = new int[4];
-    		for(int i=0;i<4;i++){
-    			arr[i] = (int)(v[3-i] & 0xFF);
-    		}
-    		return ((arr[0] << 24) + (arr[1] << 16) + (arr[2] << 8) + (arr[3] << 0));
-    	}
 
     public byte[] getLittleEndian(int v){
 	    	byte[] buf = new byte[4];
@@ -73,57 +70,44 @@ public class TCPSocketAPI extends Thread{
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
-		byte [] data = new byte[1024];
-		
-		try {
-			inFromServer.read(data, 0, 7);
-			
-			String byteToString = new String(data,0,data.length);
-			System.out.println("Init Msg : " + byteToString);
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+
+		TCPSocketUtil socket_util = new TCPSocketUtil();
+		String InitHeader = socket_util.getSurfInitHeader(inFromServer);
+		if(InitHeader == null)
+		{
+			this.process_flag = false;
+			try {
+				socket.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		
         while(process_flag)
         {
-        		byte [] Length = new byte[128];
-        		byte [] byteJsonData = new byte[4096];
-        		String JsonData;
-        		
     			try {
-				int	nLen = 0;
-				int nRet = 0;
-    				nRet = inFromServer.read(Length,0,4);
-    				if(nRet <= 0)
-    				{
-    					this.process_flag = false;
-    					socket.close();
-    					break;
-    				}
-    				
-				nLen = this.getBigEndian(Length);
-				System.out.println("Read Len : " + nLen);
-				
-				nRet = inFromServer.read(byteJsonData,0,nLen);
-				
-				System.out.println("read nRet : \n" + nRet);
-				
-				if(nRet <= 0)
+				int nLen = socket_util.getSurfBodyLength(inFromServer);
+				if(nLen < 0)
 				{
 					this.process_flag = false;
 					socket.close();
 					break;
 				}
-				if(nRet < nLen)
+				
+				String JsonData = socket_util.getSurfBodyRead(inFromServer, nLen);
+				if(JsonData == null)
 				{
-					nRet = inFromServer.read(byteJsonData,0,nLen-nRet);
+					this.process_flag = false;
+					socket.close();
+					break;
 				}
-				JsonData = new String(byteJsonData,0,nLen);
-				System.out.println("Read Json : \n" + JsonData);
+				JsonToolParser recv_parser = new JsonToolParser();
+				recv_parser.RecvParser(JsonData);
 				
 			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
